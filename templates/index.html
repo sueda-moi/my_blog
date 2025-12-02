@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ section.title }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fff;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .home-header {
+            margin-bottom: 3rem;
+        }
+
+        .home-header h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .intro {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .posts-list h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 0.5rem;
+        }
+
+        .post-items {
+            list-style: none;
+        }
+
+        .post-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-date {
+            display: inline-block;
+            color: #999;
+            font-size: 0.9rem;
+            margin-right: 1rem;
+            min-width: 100px;
+        }
+
+        .post-title {
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .post-title:hover {
+            text-decoration: underline;
+        }
+
+        .post-description {
+            margin: 0.5rem 0 0 116px;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .pagination {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .pagination a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .pagination a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+
+            .home-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .post-date {
+                display: block;
+                margin-bottom: 0.3rem;
+            }
+            
+            .post-description {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="home-header">
+            <h1>{{ section.title }}</h1>
+            {% if section.content %}
+            <div class="intro">
+                {{ section.content | safe }}
+            </div>
+            {% endif %}
+        </header>
+
+        <main class="posts-list">
+            <h2>Recent Posts</h2>
+            
+            {% set posts_section = get_section(path="posts/_index.md") %}
+            {% if posts_section.pages %}
+            <ul class="post-items">
+                {% for page in posts_section.pages %}
+                <li class="post-item">
+                    <time class="post-date">{{ page.date | date(format="%Y-%m-%d") }}</time>
+                    <a href="{{ page.permalink }}" class="post-title">{{ page.title }}</a>
+                    {% if page.description %}
+                    <p class="post-description">{{ page.description }}</p>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No posts yet.</p>
+            {% endif %}
+
+
+        </main>
+    </div>
+</body>
+</html>
